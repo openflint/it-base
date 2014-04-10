@@ -7,8 +7,11 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -23,6 +26,7 @@ public class Upgrade implements IDebuggable {
 
     private static final String TAG = Upgrade.class.getSimpleName();
     private static final String KEY_UPGRADE_URL = "upgrade_url";
+    private static final String KEY_PLATFORM_ID = "PLATFORM_ID";
     private String mUpgradeUrl;
     private UpgradeView mUpgradeView;
     private UpgradeTask mTask;
@@ -39,20 +43,53 @@ public class Upgrade implements IDebuggable {
         Upgrade instance = new Upgrade();
         try {
             instance.mVersionCode = SystemUtils.getPackageInfo(context).versionCode;
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo info =
+                    context.getPackageManager().getApplicationInfo(context.getPackageName(),
+                            PackageManager.GET_META_DATA);
             Bundle metaData = info.metaData;
             String upgradeUrl = metaData.getString(KEY_UPGRADE_URL, null);
+            String platformUrl = metaData.getString(KEY_PLATFORM_ID).trim();
+            int appVersionCode = 0;
+            PackageManager manager = context.getPackageManager();
+            try {
+                PackageInfo packageInfo = manager.getPackageInfo(context.getPackageName(), 0);
+                appVersionCode = packageInfo.versionCode; // 版本名
+            } catch (NameNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+
+            WifiInfo wifiInfo = wifi.getConnectionInfo();
+            String macAddress = wifiInfo.getMacAddress();
+
+            upgradeUrl =
+                    upgradeUrl.concat("?deviceid=" + macAddress + "&platform=" + platformUrl
+                            + "&code=" + appVersionCode);
+            if (platformUrl == null) {
+                if (DEBUG)
+                    Log.e(TAG, String.format(
+                            "没有在AndroidManifest.xml application下配置meta-data android:name=\"%s\"",
+                            KEY_PLATFORM_ID));
+                throw new NameNotFoundException(String.format(
+                        "没有找到平台号,找不到以%s为KEY的Application metaData", KEY_PLATFORM_ID));
+            }
             if (upgradeUrl == null) {
                 if (DEBUG)
-                    Log.e(TAG, String.format("没有在AndroidManifest.xml application下配置meta-data android:name=\"%s\"", KEY_UPGRADE_URL));
-                throw new NameNotFoundException(String.format("没有找到升级地址,找不到以%s为KEY的Application metaData", KEY_UPGRADE_URL));
+                    Log.e(TAG, String.format(
+                            "没有在AndroidManifest.xml application下配置meta-data android:name=\"%s\"",
+                            KEY_UPGRADE_URL));
+                throw new NameNotFoundException(String.format(
+                        "没有找到升级地址,找不到以%s为KEY的Application metaData", KEY_UPGRADE_URL));
             }
             if (DEBUG)
-                Log.d(TAG, String.format("versionCode:%s, 升级地址:%s", new Object[] { instance.mVersionCode, upgradeUrl }));
+                Log.d(TAG,
+                        String.format("versionCode:%s, 升级地址:%s", new Object[] {
+                                instance.mVersionCode, upgradeUrl}));
             instance.mUpgradeUrl = upgradeUrl;
         } catch (Exception e) {
-            if (DEBUG)
-                e.printStackTrace();
+            if (DEBUG) e.printStackTrace();
             instance = null;
         }
         return instance;
