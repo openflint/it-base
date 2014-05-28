@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.infthink.libs.base.BaseService.BaseServiceBinder;
@@ -13,7 +14,7 @@ import com.infthink.libs.base.BaseService.IBaseServiceInitalizedListener;
 import com.infthink.libs.common.message.MessageManager;
 import com.infthink.libs.common.utils.IDebuggable;
 
-public abstract class BaseActivity<T extends BaseService> extends Activity implements IDebuggable, IBaseServiceInitalizedListener {
+public abstract class BaseActivity<T extends BaseService> extends ActionBarActivity implements IDebuggable, IBaseServiceInitalizedListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
     private T mService;
