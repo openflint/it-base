@@ -9,6 +9,7 @@ import android.view.View;
 import com.infthink.libs.cache.expires.TextCacheId;
 import com.infthink.libs.cache.expires.TextCacheable;
 import com.infthink.libs.common.os.AsyncFiloTask;
+import com.infthink.libs.network.HttpDownload;
 
 public class TextLoader {
 
@@ -85,8 +86,12 @@ public class TextLoader {
         }
 
     }
-
+    
     public static <T> void loadText(final TextCachePool cachePool, ITextLoadListener<T> listener, final String textUrl) {
+        loadText(cachePool, listener, textUrl, HttpDownload.METHOD_GET);
+    }
+    // mode: 0 is GET, 1 is POST
+    public static <T> void loadText(final TextCachePool cachePool, ITextLoadListener<T> listener, final String textUrl, final String mode) {
         if (textUrl == null) {
             return;
         }
@@ -98,7 +103,7 @@ public class TextLoader {
             protected T doInBackground(Void... params) {
                 ITextLoadListener<T> listener = refListener.get();
                 if (listener != null && textUrl.equals(listener.getTag(TAG_TEXT_URL))) {
-                    String text = getText(cachePool, textUrl);
+                    String text = getText(cachePool, textUrl, HttpDownload.METHOD_GET.equals(mode) ? 0 : 1);
                     if (text != null) {
                         return listener.parseText(text);
                     }
@@ -124,9 +129,13 @@ public class TextLoader {
         listener.setTag(TAG_TASK, task);
         task.execute();
     }
-
+    
     private static String getText(TextCachePool cachePool, String httpUrl) {
-        TextCacheId cacheId = new TextCacheId(httpUrl);
+        return getText(cachePool, httpUrl, 0);
+    }
+
+    private static String getText(TextCachePool cachePool, String httpUrl, int mode) {
+        TextCacheId cacheId = new TextCacheId(httpUrl, mode);
         TextCacheable cacheable = cachePool.getCache(cacheId);
         return cacheable == null ? null : cacheable.getText();
     }

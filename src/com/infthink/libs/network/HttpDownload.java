@@ -498,9 +498,9 @@ public class HttpDownload implements IDebuggable {
                 onAddRequestProperties.onAddRequestProperties(connection);
             }
             connection.setDoOutput(onDoOutput != null);
-            if (onDoOutput != null) {
-                connection.setChunkedStreamingMode(0);
-            }
+//          if (onDoOutput != null) {
+//              connection.setChunkedStreamingMode(0);
+//          }
 
             if (range > 0) {
                 String property = "bytes=" + range + "-";
@@ -603,7 +603,6 @@ public class HttpDownload implements IDebuggable {
          * @param os
          */
         public void onDoOutput(HttpURLConnection connection, OutputStream os);
-
     }
 
     public interface IOnDoInput {

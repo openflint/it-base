@@ -10,9 +10,16 @@ public class TextCacheId implements IExpiresCacheId<TextCacheable> {
 
     private static final String TAG = TextCacheId.class.getSimpleName();
     private String mUrl;
+    private int mMode;
 
     public TextCacheId(String httpUrl) {
         mUrl = httpUrl;
+        mMode = 0;
+    }
+    
+    public TextCacheId(String httpUrl, int mode) {
+        mUrl = httpUrl;
+        mMode = mode;
     }
 
     @Override
@@ -21,7 +28,7 @@ public class TextCacheId implements IExpiresCacheId<TextCacheable> {
             Log.d(TAG, String.format("创建Text缓存 url:%s", mUrl));
         }
         TextCacheable instance = null;
-        InputStream is = HttpDirectMemoryDownload.download(mUrl, null);
+        InputStream is = HttpDirectMemoryDownload.download(mUrl, mMode, null);
         if (is != null) {
             instance = new TextCacheable(is);
         }

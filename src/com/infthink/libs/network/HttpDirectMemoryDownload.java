@@ -11,23 +11,46 @@ public class HttpDirectMemoryDownload implements IDebuggable {
     private static final long TIME_OUT = 60000;
 
     public static InputStream download(String httpUrl, IOnAddRequestProperties onAddRequestProperties) {
+        return download(httpUrl, 0, onAddRequestProperties);
+    }
+    
+    public static InputStream download(String httpUrl, int mode, IOnAddRequestProperties onAddRequestProperties) {
         final ObjectWrapper<InputStream> inputStreamWrapper = new ObjectWrapper<InputStream>();
-        HttpMemoryDownload.download(httpUrl, onAddRequestProperties, new IOnHttpMemoryDownload() {
-            @Override
-            public void onHttpMemoryDownload(String httpUrl, InputStream inputStream) {
-                inputStreamWrapper.setObject(inputStream);
-                if (inputStreamWrapper.isLocked()) {
-                    inputStreamWrapper.notify();
-                } else {
-                    inputStreamWrapper.setLocked(true);
+        if (mode == 0) {
+            HttpMemoryDownload.download(httpUrl, onAddRequestProperties, new IOnHttpMemoryDownload() {
+                @Override
+                public void onHttpMemoryDownload(String httpUrl, InputStream inputStream) {
+                    inputStreamWrapper.setObject(inputStream);
+                    if (inputStreamWrapper.isLocked()) {
+                        inputStreamWrapper.notify();
+                    } else {
+                        inputStreamWrapper.setLocked(true);
+                    }
                 }
-            }
-
-            @Override
-            public boolean isAlreadyCancelled() {
-                return false;
-            }
-        });
+    
+                @Override
+                public boolean isAlreadyCancelled() {
+                    return false;
+                }
+            });
+        } else {
+            HttpMemoryDownload.downloadPost(httpUrl, onAddRequestProperties, new IOnHttpMemoryDownload() {
+                @Override
+                public void onHttpMemoryDownload(String httpUrl, InputStream inputStream) {
+                    inputStreamWrapper.setObject(inputStream);
+                    if (inputStreamWrapper.isLocked()) {
+                        inputStreamWrapper.notify();
+                    } else {
+                        inputStreamWrapper.setLocked(true);
+                    }
+                }
+    
+                @Override
+                public boolean isAlreadyCancelled() {
+                    return false;
+                }
+            });
+        }
         synchronized (inputStreamWrapper) {
             try {
                 if (!inputStreamWrapper.isLocked()) {
