@@ -27,15 +27,15 @@ import com.infthink.libs.common.utils.MeasureUtils;
 public class UpgradeView implements IDebuggable {
 
     private static final String TAG = UpgradeView.class.getSimpleName();
-    private static final String UPGRADE_TITLE = "软件升级";
-    private static final String UPGRADE_CHECKING = "检查升级信息...";
-    private static final String UPGRADE_CHECKING_ERROR = "获取升级信息失败,请检查网络链接";
-    private static final String UPGRADE_CHECKING_LASTEST = "当前已经是最新版本";
-    private static final String UPGRADE_CONFIRM = "发现新版本,是否升级?";
-    private static final String UPGRADE_DOWNLOADING = "下载新版本...";
-    private static final String UPGRADE_DOWNLOAD_FAIL = "新版本下载失败,请检查网络链接";
-    private static final String UPGRADE_OK = "确定";
-    private static final String UPGRADE_CANCEL = "取消";
+    private static final String UPGRADE_TITLE = "Version update";
+    private static final String UPGRADE_CHECKING = "Checking for new version…";
+    private static final String UPGRADE_CHECKING_ERROR = "Fail to get new version info, please check you network connection status.";
+    private static final String UPGRADE_CHECKING_LASTEST = "Current version is up to date.";
+    private static final String UPGRADE_CONFIRM = "A new version available, ready to update?";
+    private static final String UPGRADE_DOWNLOADING = "Downloading…";
+    private static final String UPGRADE_DOWNLOAD_FAIL = "Fail to download update package, please check you network connection status.";
+    private static final String UPGRADE_OK = "OK";
+    private static final String UPGRADE_CANCEL = "Cancel";
     private Activity mContext;
     private UpgradeDialogFragment mUpgradeDialogFragment;
     private boolean mShowChecking;
