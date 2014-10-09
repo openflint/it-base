@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="upgrade_title">软件升级</string>
+    <string name="upgrade_checking">检查升级信息……</string>
+    <string name="upgrade_checking_error">获取升级信息失败，请检查网络链接</string>
+    <string name="upgrade_checking_latest">当前已经是最新版本</string>
+    <string name="upgrade_confirm">发现新版本，是否升级？</string>
+    <string name="upgrade_downloading">下载新版本……</string>
+    <string name="upgrade_download_fail">新版本下载失败，请检查网络链接</string>
+    <string name="upgrade_ok">确定</string>
+    <string name="upgrade_cancel">取消</string>
+</resources>

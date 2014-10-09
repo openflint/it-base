@@ -23,19 +23,12 @@ import android.widget.TextView;
 
 import com.infthink.libs.common.utils.IDebuggable;
 import com.infthink.libs.common.utils.MeasureUtils;
+import com.infthink.libs.R;
 
 public class UpgradeView implements IDebuggable {
 
     private static final String TAG = UpgradeView.class.getSimpleName();
-    private static final String UPGRADE_TITLE = "Version update";
-    private static final String UPGRADE_CHECKING = "Checking for new version…";
-    private static final String UPGRADE_CHECKING_ERROR = "Fail to get new version info, please check you network connection status.";
-    private static final String UPGRADE_CHECKING_LASTEST = "Current version is up to date.";
-    private static final String UPGRADE_CONFIRM = "A new version available, ready to update?";
-    private static final String UPGRADE_DOWNLOADING = "Downloading…";
-    private static final String UPGRADE_DOWNLOAD_FAIL = "Fail to download update package, please check you network connection status.";
-    private static final String UPGRADE_OK = "OK";
-    private static final String UPGRADE_CANCEL = "Cancel";
+    
     private Activity mContext;
     private UpgradeDialogFragment mUpgradeDialogFragment;
     private boolean mShowChecking;
@@ -68,7 +61,7 @@ public class UpgradeView implements IDebuggable {
             show();
         }
         mUpgradeDialogFragment.mStepDes.setVisibility(View.VISIBLE);
-        mUpgradeDialogFragment.mStepDes.setText(UPGRADE_CHECKING);
+        mUpgradeDialogFragment.mStepDes.setText(mContext.getResources().getString(R.string.upgrade_checking));
         mUpgradeDialogFragment.mProgressBar.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnCancel.setVisibility(View.VISIBLE);
         mUpgradeDialogFragment.mBtnCancel.setOnClickListener(new OnClickListener() {
@@ -86,7 +79,7 @@ public class UpgradeView implements IDebuggable {
             show();
         }
         mUpgradeDialogFragment.mStepDes.setVisibility(View.VISIBLE);
-        mUpgradeDialogFragment.mStepDes.setText(UPGRADE_CHECKING_ERROR);
+        mUpgradeDialogFragment.mStepDes.setText(mContext.getResources().getString(R.string.upgrade_checking_error));
         mUpgradeDialogFragment.mProgressBar.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnCancel.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnOK.setVisibility(View.VISIBLE);
@@ -104,7 +97,7 @@ public class UpgradeView implements IDebuggable {
             show();
         }
         mUpgradeDialogFragment.mStepDes.setVisibility(View.VISIBLE);
-        mUpgradeDialogFragment.mStepDes.setText(UPGRADE_CHECKING_LASTEST);
+        mUpgradeDialogFragment.mStepDes.setText(mContext.getResources().getString(R.string.upgrade_checking_latest));
         mUpgradeDialogFragment.mProgressBar.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnCancel.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnOK.setVisibility(View.VISIBLE);
@@ -120,7 +113,7 @@ public class UpgradeView implements IDebuggable {
     void showConfirm(final Upgrade upgrade) {
         show();
         mUpgradeDialogFragment.mStepDes.setVisibility(View.VISIBLE);
-        mUpgradeDialogFragment.mStepDes.setText(UPGRADE_CONFIRM);
+        mUpgradeDialogFragment.mStepDes.setText(mContext.getResources().getString(R.string.upgrade_confirm));
         mUpgradeDialogFragment.mProgressBar.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnCancel.setVisibility(View.VISIBLE);
         mUpgradeDialogFragment.mBtnCancel.setOnClickListener(new OnClickListener() {
@@ -142,7 +135,7 @@ public class UpgradeView implements IDebuggable {
     void showDownloading(final Upgrade upgrade, int progressPercent) {
         show();
         mUpgradeDialogFragment.mStepDes.setVisibility(View.VISIBLE);
-        mUpgradeDialogFragment.mStepDes.setText(UPGRADE_DOWNLOADING);
+        mUpgradeDialogFragment.mStepDes.setText(mContext.getResources().getString(R.string.upgrade_downloading));
         mUpgradeDialogFragment.mProgressBar.setVisibility(View.VISIBLE);
         if (progressPercent < 0) {
             mUpgradeDialogFragment.mProgressBar.setIndeterminate(true);
@@ -164,7 +157,7 @@ public class UpgradeView implements IDebuggable {
     void showDownloadingFail(final Upgrade upgrade) {
         show();
         mUpgradeDialogFragment.mStepDes.setVisibility(View.VISIBLE);
-        mUpgradeDialogFragment.mStepDes.setText(UPGRADE_DOWNLOAD_FAIL);
+        mUpgradeDialogFragment.mStepDes.setText(mContext.getResources().getString(R.string.upgrade_download_fail));
         mUpgradeDialogFragment.mProgressBar.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnCancel.setVisibility(View.GONE);
         mUpgradeDialogFragment.mBtnOK.setVisibility(View.VISIBLE);
@@ -189,7 +182,7 @@ public class UpgradeView implements IDebuggable {
             Resources resources = context.getResources();
             ApplicationInfo appInfo = context.getApplicationInfo();
             Drawable icon = appInfo.loadIcon(context.getPackageManager());
-            String lable = UPGRADE_TITLE;
+            String lable = resources.getString(R.string.upgrade_title);
             if (appInfo.labelRes != 0) {
                 lable = resources.getString(appInfo.labelRes);
             }
@@ -209,7 +202,7 @@ public class UpgradeView implements IDebuggable {
             root.addView(title);
 
             TextView stepDes = new TextView(context);
-            stepDes.setText(UPGRADE_CHECKING);
+            stepDes.setText(resources.getString(R.string.upgrade_checking));
             stepDes.setGravity(Gravity.CENTER_VERTICAL);
             stepDes.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Widget_TextView_PopupMenu);
             stepDes.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -228,13 +221,13 @@ public class UpgradeView implements IDebuggable {
             root.addView(btns);
 
             Button btnCancel = new Button(context);
-            btnCancel.setText(UPGRADE_CANCEL);
+            btnCancel.setText(resources.getString(R.string.upgrade_cancel));
             btnCancel.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Widget_TextView_PopupMenu);
             btnCancel.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             btns.addView(btnCancel);
 
             Button btnOK = new Button(context);
-            btnOK.setText(UPGRADE_OK);
+            btnOK.setText(resources.getString(R.string.upgrade_ok));
             btnOK.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Widget_TextView_PopupMenu);
             btnOK.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             btns.addView(btnOK);

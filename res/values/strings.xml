@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="upgrade_title">Version update</string>
+    <string name="upgrade_checking">Checking for new version…</string>
+    <string name="upgrade_checking_error">Fail to get new version info, please check you network connection status.</string>
+    <string name="upgrade_checking_latest">Current version is up to date.</string>
+    <string name="upgrade_confirm">A new version available, ready to update?</string>
+    <string name="upgrade_downloading">Downloading…</string>
+    <string name="upgrade_download_fail">Fail to download update package, please check you network connection status.</string>
+    <string name="upgrade_ok">OK</string>
+    <string name="upgrade_cancel">Cancel</string>
+</resources>
